@@ -48,8 +48,7 @@ Writer:
   // end of critical section
   release(check);
   release(rwsync);
-} 
- 
+}
 ```
 Reader Implementation
 ```cpp

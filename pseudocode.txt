@@ -1,0 +1,43 @@
+// initialisation
+semaphore check = 1;
+semaphore rupdate = 1;
+semaphore rwsync = 1;
+int rcount = 0;
+
+Writer:
+{
+  wait(rwsync);
+  wait(check);
+  //  write data - critical section
+  write();
+  // end of critical section
+  release(check);
+  release(rwsync);
+}
+
+Reader:
+{
+  wait(rwsync);
+  wait(rupdate);
+  rcount++;
+  if(rcount == 1) 
+  {
+    // if the process is the first process entering the critical section 
+    // if it is not the first then this must have been already set to wait
+    wait(check);
+  }
+  release(rupdate);
+  release(rwsync);
+  // read data - critical section
+  read();  
+  // end of critcal section
+  wait(rupdate)
+  {
+    rcount--;
+  }
+  if(rcount == 0)
+  {
+    release(check);
+  }
+  release(rupdate);
+}
